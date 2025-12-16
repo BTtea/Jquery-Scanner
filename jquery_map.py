@@ -1,6 +1,7 @@
 from os import system
 import sys
 import requests
+from pathlib import Path
 from platform import system as platform_system
 from packaging import version
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -202,12 +203,22 @@ def check_similarity(target_url:str,target_res_text:str,find_ver:list) -> None:
         msg=''
         for path in version_key[ver]:
             req_url=f'{domain}{path}'
-            s1=requests.get(req_url)
-            similarity_value=f"{fuzz.ratio(s1.text, target_res_text):.2f}"
+            current_version_jquery=''
+
+            if Path(f"./all_version_jquery{path}").exists():
+                with open(f"./all_version_jquery{path}",'r',encoding="utf-8") as f:
+                    current_version_jquery=f.read()
+            else:
+                s1=requests.get(req_url)
+                current_version_jquery=s1.text
+                with open(f"./all_version_jquery{path}", "w", encoding="utf-8") as f:
+                    f.write(current_version_jquery)
+
+            similarity_value=f"{fuzz.ratio(current_version_jquery, target_res_text):.2f}"
             if float(similarity_value)>similarity_value_max_data['max_similarity']:
                 similarity_value_max_data['max_similarity']=float(similarity_value)
                 similarity_value_max_data['version']=ver
-            msg =f"| {req_url:56}  | {colors.yellow}{calc_unit(s1.text):9}{colors.RESET} "
+            msg =f"| {req_url:56}  | {colors.yellow}{calc_unit(current_version_jquery):9}{colors.RESET} "
             msg+=f"| {color_level(float(similarity_value))}{(similarity_value+' %'):10}{colors.RESET} |"
             print(msg)
     print(f'+------------------------------------------------------------------------------------+')
@@ -462,8 +473,7 @@ def version_crawl(url:str) -> None:
         print(*[f'[{colors.green}+{colors.RESET}] {i}' for i in find_ver],sep="\n")
         check_similarity(url,res.text,find_ver)
         return
-    
-    
+
     for ver in versions:
         if ver in res.text:
             find_ver.append(ver)
