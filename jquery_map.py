@@ -404,7 +404,7 @@ def load_date_of_versions() -> dict:
         '* Date: 2023-03-08T15:28Z':'3.6.4',
         '* Date: 2023-05-11T18:29Z':'3.7.0',
         '* Date: 2023-08-28T13:37Z':'3.7.1',
-        '* Date: 2025-08-11T16:40Z':'4.0.0-rc.1.slim'
+        '* Date: 2026-01-18T00:20Z':'4.0.0'
     }
     return date_of_version
 
@@ -522,3 +522,4 @@ def main(param):
 
 if __name__ == '__main__':
     main(sys.argv)
+
