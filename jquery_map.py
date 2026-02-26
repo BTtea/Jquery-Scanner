@@ -508,7 +508,7 @@ def main(param):
                 browser="msedge.exe" if param[1] == "" else param[1]
                 system(f'start {browser} "{html_scanner}"')
             else:
-                system(f'BROWSER=$(xdg-settings get default-web-browser | sed \'s/\.desktop$//\');$BROWSER "{html_scanner}"')
+                system(f'BROWSER=$(xdg-settings get default-web-browser | sed \'s/\\.desktop$//\');$BROWSER "{html_scanner}"')
 
         elif action=='brute':
             brute_all_version(url)
@@ -522,4 +522,5 @@ def main(param):
 
 if __name__ == '__main__':
     main(sys.argv)
+
 
