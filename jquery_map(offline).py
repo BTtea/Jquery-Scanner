@@ -425,7 +425,7 @@ def load_date_of_versions() -> dict:
 
 def brute_all_version(url) -> None:
     find_ver=load_all_versions()
-    res=requests.get(url)
+    res=requests.get(url,verify=False)
     check_similarity(url,res.text,find_ver)
     return
 
@@ -453,7 +453,7 @@ def compare_similarity(url:str,action:str) -> None:
 
         find_ver.append(action)
     
-    res=requests.get(url)
+    res=requests.get(url,verify=False)
     check_similarity(url,res.text,find_ver)
     
     return
